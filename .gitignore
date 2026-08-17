@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+
+# Test output
+coverage/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local PostgreSQL runtime data
+.postgres/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Operating system and editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
