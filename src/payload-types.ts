@@ -68,6 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    members: Member;
+    media: Media;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,6 +78,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    members: MembersSelect<false> | MembersSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -142,6 +146,123 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members".
+ */
+export interface Member {
+  id: number;
+  name: string;
+  penName?: string | null;
+  aliases?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * 用于未来个人页面网址，只使用小写英文字母、数字和短横线。
+   */
+  slug: string;
+  status: 'active' | 'paused' | 'archived';
+  region?: string | null;
+  literaryIdentities?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  organizations?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  biography?: string | null;
+  /**
+   * 这里只是预留内容；本阶段不会公开显示。
+   */
+  publicBiography?: string | null;
+  representativeWorks?:
+    | {
+        title: string;
+        type?: string | null;
+        year?: number | null;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * 供未来新闻搜索使用，本阶段不会自动搜索。
+   */
+  searchKeywords?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  websites?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  knownWeChatAccounts?:
+    | {
+        name: string;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  profileImage?: (number | null) | Media;
+  displayOrder?: number | null;
+  /**
+   * 只有本人同意后才能开启；本阶段仍不会生成公开页面。
+   */
+  publicProfileEnabled?: boolean | null;
+  disabilityCategory?:
+    | ('physical' | 'visual' | 'hearing' | 'speech' | 'intellectual' | 'mental' | 'multiple' | 'other' | 'notProvided')
+    | null;
+  disabilityLevel?: ('level1' | 'level2' | 'level3' | 'level4' | 'notProvided') | null;
+  showDisabilityCategory?: boolean | null;
+  showDisabilityLevel?: boolean | null;
+  consentStatus: 'notRequested' | 'granted' | 'denied';
+  consentDate?: string | null;
+  consentNotes?: string | null;
+  /**
+   * 仅供后台使用，未来公开页面不得读取。
+   */
+  internalNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * 简要描述图片内容，方便使用读屏软件的读者理解。
+   */
+  alt: string;
+  /**
+   * 请勿上传证件、授权书扫描件或其他敏感证明材料。
+   */
+  internalNotes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -163,10 +284,19 @@ export interface PayloadKv {
  */
 export interface PayloadLockedDocument {
   id: number;
-  document?: {
-    relationTo: 'users';
-    value: number | User;
-  } | null;
+  document?:
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'members';
+        value: number | Member;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
+      } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
@@ -230,6 +360,98 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "members_select".
+ */
+export interface MembersSelect<T extends boolean = true> {
+  name?: T;
+  penName?: T;
+  aliases?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  slug?: T;
+  status?: T;
+  region?: T;
+  literaryIdentities?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  organizations?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  biography?: T;
+  publicBiography?: T;
+  representativeWorks?:
+    | T
+    | {
+        title?: T;
+        type?: T;
+        year?: T;
+        notes?: T;
+        id?: T;
+      };
+  searchKeywords?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  websites?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  knownWeChatAccounts?:
+    | T
+    | {
+        name?: T;
+        notes?: T;
+        id?: T;
+      };
+  profileImage?: T;
+  displayOrder?: T;
+  publicProfileEnabled?: T;
+  disabilityCategory?: T;
+  disabilityLevel?: T;
+  showDisabilityCategory?: T;
+  showDisabilityLevel?: T;
+  consentStatus?: T;
+  consentDate?: T;
+  consentNotes?: T;
+  internalNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  internalNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
