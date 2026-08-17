@@ -58,21 +58,41 @@ h1 {
   line-height: 1.7;
 }
 
-.admin-link {
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.admin-link,
+.submission-link {
   display: inline-flex;
   padding: 0.8rem 1.1rem;
   border-radius: 999px;
-  background: #2f2a23;
-  color: #fff;
   font-weight: 650;
   text-decoration: none;
 }
 
-.admin-link:hover {
+.submission-link {
+  background: #2f2a23;
+  color: #fff;
+}
+
+.admin-link {
+  border: 1px solid #8c8274;
+  color: #332d25;
+}
+
+.submission-link:hover {
   background: #594c3b;
 }
 
-.admin-link:focus-visible {
+.admin-link:hover {
+  background: #eee5d7;
+}
+
+.admin-link:focus-visible,
+.submission-link:focus-visible {
   outline: 3px solid #b78c53;
   outline-offset: 3px;
 }

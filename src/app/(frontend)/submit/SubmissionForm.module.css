@@ -1,0 +1,262 @@
+.shell {
+  min-height: 100vh;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: #f4f0e8;
+}
+
+.card,
+.successCard {
+  width: min(100%, 46rem);
+  margin: 0 auto;
+  border: 1px solid #d7cdbd;
+  border-radius: 1rem;
+  background: #fffdf8;
+  box-shadow: 0 1.5rem 4rem rgb(63 51 34 / 10%);
+}
+
+.card {
+  padding: clamp(1.25rem, 5vw, 3.5rem);
+}
+
+.successCard {
+  padding: clamp(2rem, 7vw, 4rem);
+  text-align: center;
+}
+
+.header {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ded6c8;
+}
+
+.backLink,
+.homeLink {
+  color: #5f4728;
+  font-weight: 700;
+  text-underline-offset: 0.2em;
+}
+
+.eyebrow {
+  margin: 2rem 0 0.75rem;
+  color: #765b36;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.header h1,
+.successCard h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.introduction,
+.privacyNotice,
+.muted {
+  line-height: 1.75;
+}
+
+.introduction {
+  margin: 1.25rem 0 0;
+  color: #4e473e;
+}
+
+.privacyNotice {
+  margin: 1.25rem 0 0;
+  padding: 1rem;
+  border-left: 0.3rem solid #8a6637;
+  background: #f7efe2;
+  color: #3f3528;
+  font-weight: 650;
+}
+
+.form {
+  display: grid;
+  gap: 1.75rem;
+  padding-top: 2rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.field label,
+.confirmation label {
+  color: #29251f;
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.required,
+.confirmation label span {
+  margin-left: 0.35rem;
+  color: #8a2f20;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.description,
+.finalNotice {
+  margin: 0;
+  color: #625a4f;
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #8c8274;
+  border-radius: 0.55rem;
+  background: #fff;
+  color: #25211c;
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field textarea[name="content"] {
+  min-height: 18rem;
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible,
+.confirmation input:focus-visible,
+.submitButton:focus-visible,
+.backLink:focus-visible,
+.homeLink:focus-visible {
+  outline: 3px solid #b0782f;
+  outline-offset: 3px;
+}
+
+.field [aria-invalid="true"] {
+  border-color: #a52d22;
+  box-shadow: 0 0 0 1px #a52d22;
+}
+
+.fieldError,
+.formError {
+  margin: 0;
+  color: #8f251b;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.formError {
+  padding: 1rem;
+  border: 2px solid #a52d22;
+  border-radius: 0.55rem;
+  background: #fff0ed;
+}
+
+.confirmation {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  padding: 1rem;
+  border: 1px solid #b4a997;
+  border-radius: 0.55rem;
+  background: #faf6ed;
+}
+
+.confirmation input {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: 0.12rem 0 0;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.submitButton,
+.homeLink {
+  min-height: 3rem;
+  border: 0;
+  border-radius: 999px;
+  background: #2f2a23;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 750;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.9rem 1.25rem;
+  cursor: pointer;
+}
+
+.submitButton:hover:not(:disabled),
+.homeLink:hover {
+  background: #594c3b;
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.receipt {
+  display: block;
+  margin: 1.75rem 0;
+  padding: 1rem;
+  border: 2px dashed #8a6637;
+  border-radius: 0.6rem;
+  background: #faf4e8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: clamp(1.05rem, 5vw, 1.5rem);
+  letter-spacing: 0.03em;
+  overflow-wrap: anywhere;
+}
+
+.muted {
+  color: #625a4f;
+}
+
+.homeLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0.8rem 1.4rem;
+  text-decoration: none;
+}
+
+@media (max-width: 40rem) {
+  .shell {
+    padding: 0.75rem;
+  }
+
+  .card,
+  .successCard {
+    border-radius: 0.75rem;
+  }
+
+  .card {
+    padding: 1.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
