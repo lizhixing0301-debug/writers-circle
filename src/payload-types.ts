@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     members: Member;
     media: Media;
+    submissions: Submission;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     members: MembersSelect<false> | MembersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -263,6 +265,38 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions".
+ */
+export interface Submission {
+  id: number;
+  submissionNumber: string;
+  submittedAt: string;
+  submitterName: string;
+  penName?: string | null;
+  /**
+   * 仅供编辑联系投稿人，不得公开。
+   */
+  contact: string;
+  title: string;
+  category: 'poetry' | 'fiction' | 'prose' | 'criticism' | 'other';
+  content: string;
+  notes?: string | null;
+  rightsConfirmed: boolean;
+  status: 'submitted' | 'reviewing' | 'revisionRequested' | 'accepted' | 'rejected';
+  /**
+   * 由管理员审核后选择，公开投稿页不会显示成员名单。
+   */
+  relatedMember?: (number | null) | Member;
+  /**
+   * 仅后台可见，不会向投稿人或公开页面展示。
+   */
+  reviewNotes?: string | null;
+  requestToken: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -296,6 +330,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'submissions';
+        value: number | Submission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -452,6 +490,28 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "submissions_select".
+ */
+export interface SubmissionsSelect<T extends boolean = true> {
+  submissionNumber?: T;
+  submittedAt?: T;
+  submitterName?: T;
+  penName?: T;
+  contact?: T;
+  title?: T;
+  category?: T;
+  content?: T;
+  notes?: T;
+  rightsConfirmed?: T;
+  status?: T;
+  relatedMember?: T;
+  reviewNotes?: T;
+  requestToken?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -75,7 +75,11 @@ describe('Submissions 集合', () => {
     (operation) => {
       const access = Submissions.access?.[operation]
       expect(typeof access).toBe('function')
-      expect((access as Function)({ req: { user: null } })).toBe(false)
+      expect(
+        (access as (args: { req: { user: null } }) => boolean)({
+          req: { user: null },
+        }),
+      ).toBe(false)
     },
   )
 
