@@ -221,7 +221,7 @@ Expected: FAIL，提示找不到 `./consent`。
 - [ ] **Step 3: 实现授权纠正函数和 Payload 钩子**
 
 ```ts
-import type { BeforeValidateHook } from 'payload'
+import type { CollectionBeforeValidateHook } from 'payload'
 
 export type ConsentStatus = 'denied' | 'granted' | 'notRequested'
 
@@ -252,7 +252,7 @@ export function normalizeMemberConsent(
   }
 }
 
-export const enforceMemberConsent: BeforeValidateHook = ({
+export const enforceMemberConsent: CollectionBeforeValidateHook = ({
   data,
   originalDoc,
 }) => normalizeMemberConsent(data ?? {}, originalDoc ?? {})

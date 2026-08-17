@@ -1,4 +1,4 @@
-import type { BeforeValidateHook } from 'payload'
+import type { CollectionBeforeValidateHook } from 'payload'
 
 export type ConsentStatus = 'denied' | 'granted' | 'notRequested'
 
@@ -29,7 +29,7 @@ export function normalizeMemberConsent(
   }
 }
 
-export const enforceMemberConsent: BeforeValidateHook = ({
+export const enforceMemberConsent: CollectionBeforeValidateHook = ({
   data,
   originalDoc,
 }) => normalizeMemberConsent(data ?? {}, originalDoc ?? {})
