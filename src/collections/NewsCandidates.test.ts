@@ -103,7 +103,11 @@ describe('NewsCandidates 集合', () => {
 
   it('来源链接只接受 http 和 https', () => {
     const sourceUrl = findField('sourceUrl') as TextField | undefined
-    const validate = sourceUrl?.validate
+
+    expect(sourceUrl?.hasMany).not.toBe(true)
+    if (!sourceUrl || sourceUrl.hasMany) throw new Error('来源网址字段必须是单个文本。')
+
+    const validate = sourceUrl.validate
 
     expect(typeof validate).toBe('function')
     expect(validate?.('', {} as never)).toBe(true)

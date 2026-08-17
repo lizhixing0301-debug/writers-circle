@@ -71,6 +71,7 @@ export interface Config {
     members: Member;
     media: Media;
     submissions: Submission;
+    'news-candidates': NewsCandidate;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     members: MembersSelect<false> | MembersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
+    'news-candidates': NewsCandidatesSelect<false> | NewsCandidatesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -297,6 +299,54 @@ export interface Submission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-candidates".
+ */
+export interface NewsCandidate {
+  id: number;
+  candidateNumber: string;
+  title: string;
+  /**
+   * 请核对身份后再关联，不能只凭姓名相同判断。
+   */
+  relatedMember?: (number | null) | Member;
+  /**
+   * 尚未确认对应成员时，可以先记录来源中的姓名。
+   */
+  relatedPersonName?: string | null;
+  category: 'creation' | 'award' | 'activity' | 'media' | 'personal' | 'other';
+  /**
+   * 只保存必要的核实信息，不要复制整篇来源文章或无关隐私。
+   */
+  summary?: string | null;
+  publishedAt?: string | null;
+  /**
+   * 本阶段只使用“管理员手工录入”；另外两项仅为以后预留。
+   */
+  sourceType: 'manual' | 'publicTip' | 'automaticSearch';
+  sourceName?: string | null;
+  /**
+   * 只填写以 http:// 或 https:// 开头的公开来源网址。
+   */
+  sourceUrl?: string | null;
+  /**
+   * 供后续线索或自动搜索程序使用，当前手工录入可以留空。
+   */
+  sourceReference?: string | null;
+  discoveredAt: string;
+  /**
+   * 新闻候选未经人工核实不得发布；“已确认”不代表已经对外发布。
+   */
+  status: 'pending' | 'verifying' | 'confirmed' | 'rejected' | 'duplicate';
+  /**
+   * 仅后台可见，请记录来源核对过程和需要注意的问题。
+   */
+  verificationNotes?: string | null;
+  verifiedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -334,6 +384,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'submissions';
         value: number | Submission;
+      } | null)
+    | ({
+        relationTo: 'news-candidates';
+        value: number | NewsCandidate;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -510,6 +564,29 @@ export interface SubmissionsSelect<T extends boolean = true> {
   relatedMember?: T;
   reviewNotes?: T;
   requestToken?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news-candidates_select".
+ */
+export interface NewsCandidatesSelect<T extends boolean = true> {
+  candidateNumber?: T;
+  title?: T;
+  relatedMember?: T;
+  relatedPersonName?: T;
+  category?: T;
+  summary?: T;
+  publishedAt?: T;
+  sourceType?: T;
+  sourceName?: T;
+  sourceUrl?: T;
+  sourceReference?: T;
+  discoveredAt?: T;
+  status?: T;
+  verificationNotes?: T;
+  verifiedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }
