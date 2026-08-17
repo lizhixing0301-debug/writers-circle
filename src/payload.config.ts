@@ -5,6 +5,7 @@ import { buildConfig } from 'payload'
 
 import { Media } from './collections/Media'
 import { Members } from './collections/Members'
+import { Submissions } from './collections/Submissions'
 import { Users } from './collections/Users'
 import { requireEnvironment } from './config/env'
 
@@ -23,7 +24,7 @@ export default buildConfig({
       fileSize: 5 * 1024 * 1024,
     },
   },
-  collections: [Users, Members, Media],
+  collections: [Users, Members, Media, Submissions],
   db: postgresAdapter({
     pool: {
       connectionString: requireEnvironment('DATABASE_URI'),
