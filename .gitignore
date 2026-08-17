@@ -9,6 +9,9 @@ out/
 # Test output
 coverage/
 
+# Isolated development worktrees
+.worktrees/
+
 # Environment variables and secrets
 .env
 .env.*
