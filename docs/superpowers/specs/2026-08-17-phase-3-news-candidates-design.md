@@ -81,7 +81,7 @@ Phase 3 不增加“已发布”状态，因为新闻展示、周报和公众号
 ```ts
 type NewsCandidateIngestionInput = {
   category: NewsCategory
-  relatedMember?: number | string
+  relatedMember?: number
   relatedPersonName?: string
   sourceName?: string
   sourceReference?: string

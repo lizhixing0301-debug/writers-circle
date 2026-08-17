@@ -258,7 +258,7 @@ Define the input data as:
 export type ValidNewsCandidateInput = {
   category: NewsCategory
   publishedAt: string
-  relatedMember?: number | string
+  relatedMember?: number
   relatedPersonName: string
   sourceName: string
   sourceReference: string
@@ -269,7 +269,7 @@ export type ValidNewsCandidateInput = {
 }
 ```
 
-The allowlist must contain only these nine keys. Require a nonblank `title`, `category`, and `sourceType`. Apply the exact length limits from Task 1. Treat a blank optional date or URL as valid; otherwise require a parseable ISO date and a URL whose `protocol` is exactly `http:` or `https:`. Accept `relatedMember` only when it is a positive integer or nonblank string. Return field-specific Chinese errors and never mutate the caller's object.
+The allowlist must contain only these ten keys. Require a nonblank `title`, `category`, and `sourceType`. Apply the exact length limits from Task 1. Treat a blank optional date or URL as valid; otherwise require a parseable ISO date and a URL whose `protocol` is exactly `http:` or `https:`. Accept `relatedMember` only when it is a positive integer, matching this PostgreSQL project's generated Payload ID type. Return field-specific Chinese errors and never mutate the caller's object.
 
 Implement orchestration as:
 
