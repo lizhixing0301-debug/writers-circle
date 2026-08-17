@@ -3,6 +3,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { buildConfig } from 'payload'
 
+import { Media } from './collections/Media'
+import { Members } from './collections/Members'
 import { Users } from './collections/Users'
 import { requireEnvironment } from './config/env'
 
@@ -16,7 +18,12 @@ export default buildConfig({
     },
     user: Users.slug,
   },
-  collections: [Users],
+  bodyParser: {
+    limits: {
+      fileSize: 5 * 1024 * 1024,
+    },
+  },
+  collections: [Users, Members, Media],
   db: postgresAdapter({
     pool: {
       connectionString: requireEnvironment('DATABASE_URI'),
@@ -27,4 +34,3 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
 })
-
