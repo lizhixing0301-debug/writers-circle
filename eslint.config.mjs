@@ -5,6 +5,12 @@ import nextTypeScript from 'eslint-config-next/typescript'
 export default defineConfig([
   ...nextVitals,
   ...nextTypeScript,
-  globalIgnores(['.next/**', 'coverage/**', 'src/payload-types.ts']),
+  globalIgnores([
+    '.next/**',
+    '.pnpm-store/**',
+    '.postgres/**',
+    '.worktrees/**',
+    'coverage/**',
+    'src/payload-types.ts',
+  ]),
 ])
-
