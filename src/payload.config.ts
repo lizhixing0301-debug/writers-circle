@@ -6,6 +6,7 @@ import { buildConfig } from 'payload'
 import { Media } from './collections/Media'
 import { Members } from './collections/Members'
 import { NewsCandidates } from './collections/NewsCandidates'
+import { PublishedWorks } from './collections/PublishedWorks'
 import { Submissions } from './collections/Submissions'
 import { Users } from './collections/Users'
 import { WechatSearchRuns } from './collections/WechatSearchRuns'
@@ -26,7 +27,15 @@ export default buildConfig({
       fileSize: 5 * 1024 * 1024,
     },
   },
-  collections: [Users, Members, Media, Submissions, NewsCandidates, WechatSearchRuns],
+  collections: [
+    Users,
+    Members,
+    Media,
+    Submissions,
+    PublishedWorks,
+    NewsCandidates,
+    WechatSearchRuns,
+  ],
   db: postgresAdapter({
     pool: {
       connectionString: requireEnvironment('DATABASE_URI'),

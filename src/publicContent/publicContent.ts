@@ -1,6 +1,6 @@
 import type { Payload } from 'payload'
 
-import type { Media, Member, NewsCandidate } from '../payload-types'
+import type { Media, Member, NewsCandidate, PublishedWork } from '../payload-types'
 
 export type PublicMember = {
   disabilityCategory?: string
@@ -25,6 +25,17 @@ export type PublicNewsItem = {
   sourceName?: string
   sourceUrl?: string
   summary?: string
+  title: string
+}
+
+export type PublicWork = {
+  authorName: string
+  category: string
+  content: string
+  excerpt?: string
+  member?: Pick<PublicMember, 'name' | 'penName' | 'slug'>
+  publishedAt?: string
+  slug: string
   title: string
 }
 
@@ -55,6 +66,14 @@ const newsCategories: Record<string, string> = {
   media: '媒体报道',
   other: '其他',
   personal: '个人动态',
+}
+
+const workCategories: Record<string, string> = {
+  criticism: '评论',
+  fiction: '小说',
+  other: '其他',
+  poetry: '诗歌',
+  prose: '散文',
 }
 
 function textValues(values: Array<{ value?: null | string }> | null | undefined) {
@@ -150,6 +169,49 @@ function publicRelatedMember(value: Partial<NewsCandidate>['relatedMember']) {
   return { name: member.name, ...(member.penName ? { penName: member.penName } : {}), slug: member.slug }
 }
 
+function publicWorkMember(value: Partial<PublishedWork>['relatedMember']) {
+  if (!value || typeof value !== 'object') return undefined
+
+  const member = toPublicMember(value as Partial<Member>)
+  if (!member) return undefined
+
+  return {
+    name: member.name,
+    ...(member.penName ? { penName: member.penName } : {}),
+    slug: member.slug,
+  }
+}
+
+export function toPublicWork(
+  work: Partial<PublishedWork> | null | undefined,
+): PublicWork | undefined {
+  if (
+    !work ||
+    work.status !== 'published' ||
+    !work.publicationAuthorized ||
+    !work.title ||
+    !work.slug ||
+    !work.authorName ||
+    !work.category ||
+    !work.content
+  ) {
+    return undefined
+  }
+
+  return {
+    authorName: work.authorName,
+    category: workCategories[work.category] ?? '其他',
+    content: work.content,
+    ...(work.excerpt ? { excerpt: work.excerpt } : {}),
+    ...(publicWorkMember(work.relatedMember)
+      ? { member: publicWorkMember(work.relatedMember) }
+      : {}),
+    ...(work.publishedAt ? { publishedAt: work.publishedAt } : {}),
+    slug: work.slug,
+    title: work.title,
+  }
+}
+
 export function toPublicNewsItem(
   candidate: Partial<NewsCandidate> | null | undefined,
 ): PublicNewsItem | undefined {
@@ -178,6 +240,71 @@ export function toPublicNewsItem(
 
 export function createPublicContentStore(payload: Payload) {
   return {
+    async getPublicWorks(): Promise<PublicWork[]> {
+      const result = await payload.find({
+        collection: 'published-works',
+        depth: 1,
+        limit: 100,
+        overrideAccess: true,
+        pagination: false,
+        select: {
+          authorName: true,
+          category: true,
+          content: true,
+          excerpt: true,
+          publicationAuthorized: true,
+          publishedAt: true,
+          relatedMember: true,
+          slug: true,
+          status: true,
+          title: true,
+        },
+        sort: '-publishedAt',
+        where: {
+          and: [
+            { status: { equals: 'published' } },
+            { publicationAuthorized: { equals: true } },
+          ],
+        },
+      })
+
+      return result.docs.flatMap((work) => {
+        const publicWork = toPublicWork(work)
+        return publicWork ? [publicWork] : []
+      })
+    },
+
+    async getPublicWorkBySlug(slug: string): Promise<PublicWork | undefined> {
+      const result = await payload.find({
+        collection: 'published-works',
+        depth: 1,
+        limit: 1,
+        overrideAccess: true,
+        pagination: false,
+        select: {
+          authorName: true,
+          category: true,
+          content: true,
+          excerpt: true,
+          publicationAuthorized: true,
+          publishedAt: true,
+          relatedMember: true,
+          slug: true,
+          status: true,
+          title: true,
+        },
+        where: {
+          and: [
+            { slug: { equals: slug } },
+            { status: { equals: 'published' } },
+            { publicationAuthorized: { equals: true } },
+          ],
+        },
+      })
+
+      return toPublicWork(result.docs[0])
+    },
+
     async getPublicMembers(): Promise<PublicMember[]> {
       const result = await payload.find({
         collection: 'members',

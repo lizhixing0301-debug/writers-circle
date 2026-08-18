@@ -24,4 +24,11 @@ describe('Writers Circle 首页', () => {
     expect(markup).toContain('href="/members"')
     expect(markup).toContain('href="/news"')
   })
+
+  it('提供公开文学作品入口', () => {
+    const markup = renderToStaticMarkup(<HomePage />)
+
+    expect(markup).toContain('href="/works"')
+    expect(markup).toContain('文学作品')
+  })
 })

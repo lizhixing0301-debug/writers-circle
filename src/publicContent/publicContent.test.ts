@@ -33,6 +33,42 @@ function fakePayload() {
         return { docs: slug ? [publicMember] : [publicMember], totalDocs: 1 }
       }
 
+      if (collection === 'published-works') {
+        return {
+          docs: [
+            {
+              authorName: '公开笔名',
+              authorizationNotes: '仅后台可见的授权说明',
+              category: 'poetry',
+              content: '第一段虚构正文。\n\n第二段虚构正文。',
+              excerpt: '虚构作品导语。',
+              id: 21,
+              publicationAuthorized: true,
+              publishedAt: '2026-08-18T00:00:00.000Z',
+              relatedMember: publicMember,
+              slug: 'fictional-work',
+              sourceSubmission: {
+                contact: '绝不能公开的联系方式',
+                submissionNumber: 'SUB-PRIVATE',
+              },
+              status: 'published',
+              title: '允许公开的虚构作品',
+            },
+            {
+              authorName: '隐藏作者',
+              category: 'prose',
+              content: '这篇虚构作品不允许公开。',
+              id: 22,
+              publicationAuthorized: false,
+              slug: 'hidden-work',
+              status: 'draft',
+              title: '不应公开的虚构作品',
+            },
+          ],
+          totalDocs: 2,
+        }
+      }
+
       return {
         docs: [
           {
@@ -102,5 +138,31 @@ describe('安全公开数据层', () => {
     expect(JSON.stringify(news)).not.toContain('candidateNumber')
     expect(JSON.stringify(news)).not.toContain('verificationNotes')
     expect(JSON.stringify(news)).not.toContain('sourceReference')
+  })
+
+  it('只返回已发布且已获授权的作品', async () => {
+    const store = createPublicContentStore(fakePayload() as never)
+
+    const works = await store.getPublicWorks()
+
+    expect(works.map((work) => work.title)).toEqual(['允许公开的虚构作品'])
+    expect(works[0]).toMatchObject({
+      authorName: '公开笔名',
+      category: '诗歌',
+      member: { name: '虚构作家', slug: 'fictional-writer' },
+      slug: 'fictional-work',
+    })
+  })
+
+  it('公开作品不包含投稿、联系方式和授权后台字段', async () => {
+    const store = createPublicContentStore(fakePayload() as never)
+
+    const work = await store.getPublicWorkBySlug('fictional-work')
+    const text = JSON.stringify(work)
+
+    expect(text).not.toContain('sourceSubmission')
+    expect(text).not.toContain('authorizationNotes')
+    expect(text).not.toContain('绝不能公开的联系方式')
+    expect(text).not.toContain('submissionNumber')
   })
 })

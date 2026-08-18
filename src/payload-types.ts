@@ -71,6 +71,7 @@ export interface Config {
     members: Member;
     media: Media;
     submissions: Submission;
+    'published-works': PublishedWork;
     'news-candidates': NewsCandidate;
     'wechat-search-runs': WechatSearchRun;
     'payload-kv': PayloadKv;
@@ -84,6 +85,7 @@ export interface Config {
     members: MembersSelect<false> | MembersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
+    'published-works': PublishedWorksSelect<false> | PublishedWorksSelect<true>;
     'news-candidates': NewsCandidatesSelect<false> | NewsCandidatesSelect<true>;
     'wechat-search-runs': WechatSearchRunsSelect<false> | WechatSearchRunsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -301,6 +303,45 @@ export interface Submission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "published-works".
+ */
+export interface PublishedWork {
+  id: number;
+  title: string;
+  /**
+   * 只使用小写英文字母、数字和短横线，例如 spring-poem。
+   */
+  slug: string;
+  /**
+   * 请按作者同意公开的姓名或笔名填写，不要自动复制投稿人真实姓名。
+   */
+  authorName: string;
+  /**
+   * 成员本人未开启公开主页时，作品页只显示上面的公开署名。
+   */
+  relatedMember?: (number | null) | Member;
+  category: 'poetry' | 'fiction' | 'prose' | 'criticism' | 'other';
+  excerpt?: string | null;
+  /**
+   * 使用纯文本；段落之间空一行。不要粘贴网页代码。
+   */
+  content: string;
+  /**
+   * 可选。投稿编号、联系方式和审核意见不会进入公开页面。
+   */
+  sourceSubmission?: (number | null) | Submission;
+  /**
+   * 只有确认授权后才能发布；撤销此项会自动转回草稿。
+   */
+  publicationAuthorized?: boolean | null;
+  authorizationNotes?: string | null;
+  status: 'draft' | 'published' | 'archived';
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "news-candidates".
  */
 export interface NewsCandidate {
@@ -418,6 +459,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'submissions';
         value: number | Submission;
+      } | null)
+    | ({
+        relationTo: 'published-works';
+        value: number | PublishedWork;
       } | null)
     | ({
         relationTo: 'news-candidates';
@@ -602,6 +647,26 @@ export interface SubmissionsSelect<T extends boolean = true> {
   relatedMember?: T;
   reviewNotes?: T;
   requestToken?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "published-works_select".
+ */
+export interface PublishedWorksSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  authorName?: T;
+  relatedMember?: T;
+  category?: T;
+  excerpt?: T;
+  content?: T;
+  sourceSubmission?: T;
+  publicationAuthorized?: T;
+  authorizationNotes?: T;
+  status?: T;
+  publishedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

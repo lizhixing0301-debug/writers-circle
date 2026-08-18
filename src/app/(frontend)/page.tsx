@@ -11,6 +11,9 @@ export default function HomePage() {
           记录成员的文学创作与已经人工核实的文学动态。
         </p>
         <div className="home-actions">
+          <Link className="submission-link" href="/works">
+            文学作品
+          </Link>
           <Link className="submission-link" href="/members">
             浏览成员
           </Link>

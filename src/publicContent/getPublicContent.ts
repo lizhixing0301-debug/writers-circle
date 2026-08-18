@@ -19,3 +19,11 @@ export async function getPublicMemberBySlug(slug: string) {
 export async function getPublicNews() {
   return (await store()).getPublicNews()
 }
+
+export async function getPublicWorks() {
+  return (await store()).getPublicWorks()
+}
+
+export async function getPublicWorkBySlug(slug: string) {
+  return (await store()).getPublicWorkBySlug(slug)
+}
