@@ -49,6 +49,9 @@ export const NewsCandidates: CollectionConfig = {
   },
   access: protectedAccess,
   admin: {
+    components: {
+      beforeListTable: ['/components/admin/WechatSearchAction'],
+    },
     defaultColumns: [
       'candidateNumber',
       'title',
@@ -155,10 +158,10 @@ export const NewsCandidates: CollectionConfig = {
               options: [
                 { label: '管理员手工录入', value: 'manual' },
                 { label: '未来公开线索', value: 'publicTip' },
-                { label: '未来自动搜索', value: 'automaticSearch' },
+                { label: '微信公众号自动搜索', value: 'automaticSearch' },
               ],
               admin: {
-                description: '本阶段只使用“管理员手工录入”；另外两项仅为以后预留。',
+                description: '自动搜索结果由服务器写入；管理员手工新增时保持“管理员手工录入”。',
                 readOnly: true,
               },
             },
