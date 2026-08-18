@@ -120,6 +120,53 @@ describe('Just One API 微信公众号文章搜索适配器', () => {
     ])
   })
 
+  it('识别真实 V1 返回中的 doc_url 和 source 字段', async () => {
+    const fetchImpl = vi.fn(async () =>
+      jsonResponse({
+        code: 0,
+        data: {
+          data: [
+            {
+              items: [
+                {
+                  date: 1786924800,
+                  desc: '完全虚构的真实结构摘要',
+                  docID: 'FICTIONAL_DOCUMENT_ID',
+                  docType: 1,
+                  doc_url:
+                    'http://mp.weixin.qq.com/s?__biz=FICTIONAL&mid=123&idx=1&scene=7',
+                  itemShowType: 0,
+                  mpScene: 0,
+                  reportId: 'FICTIONAL_REPORT_ID',
+                  report_extinfo_str: '',
+                  source: '虚构真实结构公众号',
+                  src_type: 1,
+                  thumbUrl: 'https://example.com/fictional-cover.jpg',
+                  timestamp: 1786924800,
+                  title: '<em class="highlight">虚构成员</em>的新文章',
+                },
+              ],
+            },
+          ],
+        },
+        message: null,
+        recordTime: '2026-08-18T00:00:00.000Z',
+      }),
+    ) as typeof fetch
+
+    await expect(
+      createJustOneApiWechatProvider({ fetchImpl, token }).search('虚构成员'),
+    ).resolves.toEqual([
+      {
+        publishedAt: '2026-08-17T00:00:00.000Z',
+        sourceName: '虚构真实结构公众号',
+        summary: '完全虚构的真实结构摘要',
+        title: '虚构成员的新文章',
+        url: 'https://mp.weixin.qq.com/s?__biz=FICTIONAL&idx=1&mid=123',
+      },
+    ])
+  })
+
   it.each([
     [100, 'Token 无效'],
     [302, '调用过于频繁'],

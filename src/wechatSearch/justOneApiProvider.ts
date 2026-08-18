@@ -20,7 +20,15 @@ type ProviderOptions = {
 }
 
 const titleFields = ['title', 'articleTitle', 'article_title'] as const
-const urlFields = ['url', 'link', 'articleUrl', 'article_url', 'contentUrl', 'content_url'] as const
+const urlFields = [
+  'url',
+  'link',
+  'articleUrl',
+  'article_url',
+  'contentUrl',
+  'content_url',
+  'doc_url',
+] as const
 const sourceFields = [
   'nickname',
   'sourceName',
@@ -28,6 +36,7 @@ const sourceFields = [
   'accountName',
   'account_name',
   'author',
+  'source',
 ] as const
 const summaryFields = ['digest', 'summary', 'description', 'desc'] as const
 const dateFields = [
