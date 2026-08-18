@@ -101,6 +101,14 @@ describe('NewsCandidates 集合', () => {
     })
   })
 
+  it('默认不允许新闻候选进入公开动态页', () => {
+    expect(findField('publiclyVisible')).toMatchObject({
+      defaultValue: false,
+      name: 'publiclyVisible',
+      type: 'checkbox',
+    })
+  })
+
   it('来源链接只接受 http 和 https', () => {
     const sourceUrl = findField('sourceUrl') as TextField | undefined
 

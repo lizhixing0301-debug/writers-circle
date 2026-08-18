@@ -248,6 +248,16 @@ export const NewsCandidates: CollectionConfig = {
                 },
               },
             },
+            {
+              name: 'publiclyVisible',
+              type: 'checkbox',
+              label: '允许在公开动态页展示',
+              defaultValue: false,
+              admin: {
+                description:
+                  '须先人工核实为“已确认”，再开启此项。关闭后不会在公开页面显示。',
+              },
+            },
           ],
         },
       ],

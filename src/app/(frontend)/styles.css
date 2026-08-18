@@ -96,3 +96,140 @@ h1 {
   outline: 3px solid #b78c53;
   outline-offset: 3px;
 }
+
+.public-shell {
+  width: min(100%, 70rem);
+  margin: 0 auto;
+  padding: 1.25rem clamp(1.25rem, 5vw, 3rem) 4rem;
+}
+
+.public-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: clamp(2rem, 7vw, 5rem);
+}
+
+.public-nav a,
+.source-link,
+.member-card a,
+.member-profile a {
+  color: #5d4527;
+  text-underline-offset: 0.2em;
+}
+
+.public-header {
+  max-width: 44rem;
+  margin-bottom: 2.5rem;
+}
+
+.public-header h1,
+.member-profile h1 {
+  font-size: clamp(2.6rem, 8vw, 5rem);
+}
+
+.public-header > p:last-child,
+.profile-biography,
+.news-summary {
+  color: #625a4f;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.member-grid,
+.news-list,
+.works-list {
+  padding: 0;
+  list-style: none;
+}
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+.member-card,
+.news-card,
+.member-profile,
+.empty-state {
+  border: 1px solid #d7cdbd;
+  border-radius: 1rem;
+  background: #fffdf8;
+  box-shadow: 0 0.8rem 2.5rem rgb(63 51 34 / 7%);
+}
+
+.member-card {
+  overflow: hidden;
+  padding: 1.4rem;
+}
+
+.member-card img {
+  width: calc(100% + 2.8rem);
+  height: 13rem;
+  margin: -1.4rem -1.4rem 1.25rem;
+  object-fit: cover;
+}
+
+.member-card h2,
+.news-card h2,
+.member-profile h2 {
+  margin: 0.4rem 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+}
+
+.member-pen-name,
+.news-meta {
+  color: #765b36;
+}
+
+.member-profile {
+  max-width: 48rem;
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
+.member-profile section {
+  margin-top: 2.25rem;
+}
+
+.profile-image {
+  width: min(100%, 16rem);
+  aspect-ratio: 1;
+  margin-bottom: 1.5rem;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.works-list li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e7ded1;
+}
+
+.news-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.news-card {
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.source-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-weight: 650;
+}
+
+.empty-state {
+  padding: 1.5rem;
+  color: #625a4f;
+}

@@ -344,6 +344,10 @@ export interface NewsCandidate {
    */
   verificationNotes?: string | null;
   verifiedAt?: string | null;
+  /**
+   * 须先人工核实为“已确认”，再开启此项。关闭后不会在公开页面显示。
+   */
+  publiclyVisible?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -621,6 +625,7 @@ export interface NewsCandidatesSelect<T extends boolean = true> {
   status?: T;
   verificationNotes?: T;
   verifiedAt?: T;
+  publiclyVisible?: T;
   updatedAt?: T;
   createdAt?: T;
 }

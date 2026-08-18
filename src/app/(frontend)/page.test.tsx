@@ -8,7 +8,7 @@ describe('Writers Circle 首页', () => {
     const markup = renderToStaticMarkup(<HomePage />)
 
     expect(markup).toContain('Writers Circle')
-    expect(markup).toContain('三十二人文学志后台')
+    expect(markup).toContain('三十二人文学志')
   })
 
   it('提供清楚的投稿入口', () => {
@@ -16,5 +16,12 @@ describe('Writers Circle 首页', () => {
 
     expect(markup).toContain('href="/submit"')
     expect(markup).toContain('我要投稿')
+  })
+
+  it('提供成员和文学动态入口', () => {
+    const markup = renderToStaticMarkup(<HomePage />)
+
+    expect(markup).toContain('href="/members"')
+    expect(markup).toContain('href="/news"')
   })
 })
