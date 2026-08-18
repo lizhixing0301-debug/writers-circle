@@ -1,5 +1,6 @@
 import type { Payload } from 'payload'
 
+import { optionalEnvironment } from '../config/env'
 import {
   createJustOneApiWechatProvider,
   type WechatArticleSearchProvider,
@@ -32,8 +33,8 @@ type StarterDependencies = {
 
 function defaultConfiguration() {
   return {
-    baseUrl: process.env.WECHAT_SEARCH_API_BASE_URL,
-    token: process.env.WECHAT_SEARCH_API_TOKEN,
+    baseUrl: optionalEnvironment('WECHAT_SEARCH_API_BASE_URL'),
+    token: optionalEnvironment('WECHAT_SEARCH_API_TOKEN'),
   }
 }
 

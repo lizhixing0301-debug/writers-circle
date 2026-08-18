@@ -29,7 +29,6 @@ export function createPayloadWechatSearchStore(payload: Payload): WechatSearchSt
         pagination: false,
         select: {
           aliases: true,
-          id: true,
           name: true,
           penName: true,
           searchKeywords: true,
@@ -53,7 +52,6 @@ export function createPayloadWechatSearchStore(payload: Payload): WechatSearchSt
         limit: 1,
         overrideAccess: true,
         pagination: false,
-        select: { id: true },
         where: { sourceReference: { equals: sourceReference } },
       })
 

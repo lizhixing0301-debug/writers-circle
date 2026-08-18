@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     submissions: Submission;
     'news-candidates': NewsCandidate;
+    'wechat-search-runs': WechatSearchRun;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +85,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     submissions: SubmissionsSelect<false> | SubmissionsSelect<true>;
     'news-candidates': NewsCandidatesSelect<false> | NewsCandidatesSelect<true>;
+    'wechat-search-runs': WechatSearchRunsSelect<false> | WechatSearchRunsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -320,7 +322,7 @@ export interface NewsCandidate {
   summary?: string | null;
   publishedAt?: string | null;
   /**
-   * 本阶段只使用“管理员手工录入”；另外两项仅为以后预留。
+   * 自动搜索结果由服务器写入；管理员手工新增时保持“管理员手工录入”。
    */
   sourceType: 'manual' | 'publicTip' | 'automaticSearch';
   sourceName?: string | null;
@@ -342,6 +344,34 @@ export interface NewsCandidate {
    */
   verificationNotes?: string | null;
   verifiedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "wechat-search-runs".
+ */
+export interface WechatSearchRun {
+  id: number;
+  runNumber: string;
+  trigger: 'admin' | 'verification';
+  /**
+   * 搜索结果只是待核实线索，不能直接对外发布。
+   */
+  status: 'queued' | 'running' | 'succeeded' | 'partial' | 'failed';
+  startedAt?: string | null;
+  completedAt?: string | null;
+  memberCount: number;
+  plannedQueryCount: number;
+  apiCallCount: number;
+  resultCount: number;
+  createdCount: number;
+  duplicateCount: number;
+  failedQueryCount: number;
+  /**
+   * 只记录通俗错误，不保存密钥或第三方完整响应。
+   */
+  errorSummary?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -388,6 +418,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'news-candidates';
         value: number | NewsCandidate;
+      } | null)
+    | ({
+        relationTo: 'wechat-search-runs';
+        value: number | WechatSearchRun;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -587,6 +621,27 @@ export interface NewsCandidatesSelect<T extends boolean = true> {
   status?: T;
   verificationNotes?: T;
   verifiedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "wechat-search-runs_select".
+ */
+export interface WechatSearchRunsSelect<T extends boolean = true> {
+  runNumber?: T;
+  trigger?: T;
+  status?: T;
+  startedAt?: T;
+  completedAt?: T;
+  memberCount?: T;
+  plannedQueryCount?: T;
+  apiCallCount?: T;
+  resultCount?: T;
+  createdCount?: T;
+  duplicateCount?: T;
+  failedQueryCount?: T;
+  errorSummary?: T;
   updatedAt?: T;
   createdAt?: T;
 }

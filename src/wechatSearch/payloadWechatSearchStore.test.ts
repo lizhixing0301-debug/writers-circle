@@ -67,7 +67,6 @@ describe('Payload 微信公众号搜索存储适配器', () => {
       pagination: false,
       select: {
         aliases: true,
-        id: true,
         name: true,
         penName: true,
         searchKeywords: true,
@@ -90,7 +89,6 @@ describe('Payload 微信公众号搜索存储适配器', () => {
       limit: 1,
       overrideAccess: true,
       pagination: false,
-      select: { id: true },
       where: { sourceReference: { equals: 'wechat:abc123' } },
     })
   })

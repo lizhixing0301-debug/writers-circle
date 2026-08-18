@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 import styles from './WechatSearchAction.module.css'
 
@@ -81,9 +82,9 @@ export default function WechatSearchAction() {
         >
           {pending ? '正在启动…' : '立即搜索全部成员'}
         </button>
-        <a className={styles.link} href="/admin/collections/wechat-search-runs">
+        <Link className={styles.link} href="/admin/collections/wechat-search-runs">
           查看公众号搜索记录
-        </a>
+        </Link>
       </div>
       <p
         aria-live="polite"
