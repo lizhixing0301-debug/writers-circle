@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import path from 'node:path'
 
 import { authenticated } from '../access/authenticated'
 
@@ -22,6 +23,7 @@ export const Media: CollectionConfig = {
     displayPreview: true,
     mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
     pasteURL: false,
+    staticDir: process.env.PAYLOAD_MEDIA_DIR || path.resolve(process.cwd(), 'media'),
   },
   fields: [
     {

@@ -238,6 +238,67 @@ pnpm payload run scripts/verify-phase-6.ts
   stop
 ```
 
-## 未来 Docker Compose
+## Docker Compose 一键启动
 
-未来加入 Docker Compose 时，将继续使用 `DATABASE_URI`、`PAYLOAD_SECRET`，并通过 `WECHAT_SEARCH_API_TOKEN`（以及可选的 `WECHAT_SEARCH_API_BASE_URL`）注入搜索配置。当前仍未创建 Docker Compose 文件，也没有做线上部署。
+Docker Compose 会同时启动网站、数据库和数据库迁移步骤。它适合在另一台电脑或未来服务器上以一致方式运行项目；日常本机开发仍可继续使用上面的 `pnpm dev`。
+
+### 首次准备
+
+1. 安装并打开 Docker Desktop，等待菜单栏的 Docker 图标显示“正在运行”。
+2. 在项目根目录复制环境示例文件：
+
+```bash
+cp .env.docker.example .env.docker
+```
+
+3. 用文本编辑器打开 `.env.docker`，只填写两项：
+   - `POSTGRES_PASSWORD`：为 Docker 数据库设置一串长且私密的密码；
+   - `PAYLOAD_SECRET`：填写另一串长且私密的随机文字。
+
+不要把 `.env.docker` 发给任何人，也不要提交到 GitHub。微信公众号搜索配置没有需要时保持空白即可。
+
+### 启动与访问
+
+```bash
+pnpm docker:up
+```
+
+首次运行会下载基础镜像、创建一个全新的数据库，并自动执行数据库迁移。完成后打开：
+
+- 首页：<http://localhost:3000>
+- 后台：<http://localhost:3000/admin>
+- 健康检查：<http://localhost:3000/api/health>
+
+如果本机 3000 端口正被 `pnpm dev` 使用，请先停止该开发服务，或在 `.env.docker` 把 `APP_PORT=3000` 改为例如 `APP_PORT=3005`，然后访问 <http://localhost:3005>。
+
+### 常用命令
+
+```bash
+pnpm docker:logs
+pnpm docker:migrate
+pnpm docker:down
+```
+
+`docker:down` 只停止容器，不删除数据库或上传图片。Docker 会把数据库和图片分别保存在持久化数据卷中；即使电脑重启，数据仍会保留。
+
+### 手工备份 Docker 数据库
+
+在项目根目录运行以下命令，先创建备份目录，再导出数据库：
+
+```bash
+mkdir -p backups
+docker compose --env-file .env.docker exec -T postgres pg_dump -U writers_circle writers_circle > backups/writers-circle-backup.sql
+```
+
+`backups/` 已被 Git 忽略。上传图片还保存在独立的 Docker 数据卷中；正式上线前会在部署阶段增加服务器级别的自动备份方案。
+
+### 以后修改后台字段时
+
+如果未来新增或修改 Payload 的数据字段，必须先生成新的迁移文件，再启动 Docker：
+
+```bash
+pnpm payload migrate:create 描述本次改动 --forceAcceptWarning
+pnpm docker:migrate
+```
+
+不要在正式数据库上使用 `migrate:fresh`、`migrate:reset` 或 `migrate:refresh`，这些命令会删除数据。本阶段只完成本机 Docker Compose 基础，不包含公网服务器、域名、HTTPS 或自动定时任务。

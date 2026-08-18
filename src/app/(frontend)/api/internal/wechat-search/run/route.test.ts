@@ -5,7 +5,7 @@ vi.mock('@payload-config', () => ({ default: {} }))
 vi.mock('payload', () => ({ getPayload: vi.fn() }))
 
 import type { StartWechatSearchResult } from '../../../../../../wechatSearch/startWechatSearch'
-import { createWechatSearchRoute } from './route'
+import { createWechatSearchRoute } from './wechatSearchRoute'
 
 function request() {
   return new Request('http://localhost/api/internal/wechat-search/run', {

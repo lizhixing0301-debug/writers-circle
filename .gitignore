@@ -16,9 +16,12 @@ coverage/
 .env
 .env.*
 !.env.example
+!.env.docker.example
 
 # Local PostgreSQL runtime data
 .postgres/
+media/
+backups/
 
 # Logs
 *.log

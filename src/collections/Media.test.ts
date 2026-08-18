@@ -11,6 +11,12 @@ describe('Media 集合', () => {
     })
   })
 
+  it('使用明确的持久化图片目录', () => {
+    expect(Media.upload).toMatchObject({
+      staticDir: expect.stringMatching(/\/media$/),
+    })
+  })
+
   it('图片替代文字为必填项', () => {
     expect(Media.fields).toContainEqual(
       expect.objectContaining({

@@ -1,0 +1,23 @@
+# Development dependencies and generated output
+node_modules
+.next
+.pnpm-store
+
+# Local data, uploads, logs and backups
+.postgres
+media
+backups
+*.log
+
+# Environment files contain secrets. The example is deliberately safe to copy.
+.env
+.env.*
+!.env.example
+!.env.docker.example
+
+# Git and local-editor data are not needed in the image.
+.git
+.worktrees
+.DS_Store
+.idea
+.vscode

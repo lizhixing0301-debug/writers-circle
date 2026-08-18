@@ -37,6 +37,7 @@ export default buildConfig({
     WechatSearchRuns,
   ],
   db: postgresAdapter({
+    migrationDir: path.resolve(dirname, 'migrations'),
     pool: {
       connectionString: requireEnvironment('DATABASE_URI'),
     },

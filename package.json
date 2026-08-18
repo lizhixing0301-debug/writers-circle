@@ -9,14 +9,18 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest",
     "payload": "payload",
     "generate:importmap": "payload generate:importmap",
     "generate:types": "payload generate:types",
-    "setup:env": "node scripts/setup-local-env.mjs"
+    "setup:env": "node scripts/setup-local-env.mjs",
+    "docker:up": "docker compose --env-file .env.docker up --build -d",
+    "docker:down": "docker compose --env-file .env.docker down",
+    "docker:logs": "docker compose --env-file .env.docker logs -f",
+    "docker:migrate": "docker compose --env-file .env.docker run --rm migrate"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",
