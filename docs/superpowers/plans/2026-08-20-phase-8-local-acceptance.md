@@ -129,6 +129,6 @@
 
   Mark every completed checkbox and commit with message `chore: complete phase 8 local acceptance`.
 
-- [ ] **Step 4: Finish the branch**
+- [x] **Step 4: Finish the branch**
 
   Re-run the complete test suite on the integration result, fast-forward `main`, and push `origin main` to the existing private repository, following the approved project convention.
