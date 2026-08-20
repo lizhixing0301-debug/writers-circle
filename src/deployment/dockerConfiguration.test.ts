@@ -64,4 +64,8 @@ describe('Docker Compose deployment configuration', () => {
 
     expect(packageJson).toContain('"build": "next build --webpack"')
   })
+
+  it('builds when the project has no public assets yet', () => {
+    expect(readProjectFile('Dockerfile')).toContain('RUN mkdir -p public && pnpm generate:importmap && pnpm build')
+  })
 })

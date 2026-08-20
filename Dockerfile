@@ -17,7 +17,7 @@ COPY . .
 # runtime credentials and are replaced by .env.docker when containers start.
 ENV DATABASE_URI="postgresql://build:build@localhost:5432/build"
 ENV PAYLOAD_SECRET="build-only-placeholder-not-a-secret"
-RUN pnpm generate:importmap && pnpm build
+RUN mkdir -p public && pnpm generate:importmap && pnpm build
 
 FROM dependencies AS migration
 
