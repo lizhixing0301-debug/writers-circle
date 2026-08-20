@@ -17,6 +17,7 @@
     "generate:importmap": "payload generate:importmap",
     "generate:types": "payload generate:types",
     "setup:env": "node scripts/setup-local-env.mjs",
+    "verify:acceptance": "node scripts/run-local-acceptance.mjs",
     "docker:up": "docker compose --env-file .env.docker up --build -d",
     "docker:down": "docker compose --env-file .env.docker down",
     "docker:logs": "docker compose --env-file .env.docker logs -f",

@@ -23,7 +23,8 @@
 ### Task 1: Add one beginner-friendly acceptance command
 
 **Files:**
-- Create: `src/acceptance/localAcceptanceConfiguration.test.ts`
+- Create: `scripts/local-acceptance-core.mjs`
+- Create: `src/acceptance/localAcceptance.test.ts`
 - Create: `scripts/run-local-acceptance.mjs`
 - Modify: `package.json`
 
@@ -31,21 +32,21 @@
 - Consumes: `GET /api/health`, `VERIFY_BASE_URL`, and the existing `scripts/verify-phase-{2,3,4,5,6}.ts` entry points.
 - Produces: `pnpm verify:acceptance`, which exits with code `0` only after every acceptance phase succeeds.
 
-- [ ] **Step 1: Write a failing configuration test**
+- [ ] **Step 1: Write failing behavior tests**
 
-  Assert that `package.json` exposes `verify:acceptance`, the runner names all five existing phase scripts in order, defaults to `http://127.0.0.1:3000`, checks `/api/health`, and contains a clear Chinese startup failure message.
+  Test the real orchestration core through injected network and child-process boundaries. Verify three observable behaviors: an unhealthy website produces a clear Chinese startup error and runs no phase; a healthy website runs Phase 2–6 in order; a failed phase stops all later phases and reports the failed phase.
 
 - [ ] **Step 2: Run the focused test and confirm the expected failure**
 
-  Run `pnpm vitest run src/acceptance/localAcceptanceConfiguration.test.ts`. Expect failure because the command and runner do not exist.
+  Run `pnpm vitest run src/acceptance/localAcceptance.test.ts`. Expect failure because the orchestration core does not exist.
 
 - [ ] **Step 3: Implement the minimal sequential runner**
 
-  Add `scripts/run-local-acceptance.mjs`. Use `fetch` with a bounded timeout for the health check. Invoke pnpm through `process.env.npm_execpath` and `process.execPath`, inherit terminal output, pass `VERIFY_BASE_URL`, stop on the first non-zero child status, and print a concise Chinese success summary only after all phases pass.
+  Add `scripts/local-acceptance-core.mjs` and `scripts/run-local-acceptance.mjs`. Keep the orchestration core dependency-injected and side-effect free until called. Use `fetch` with a bounded timeout for the health check. In the executable entry point, invoke pnpm through `process.env.npm_execpath` and `process.execPath`, inherit terminal output, pass `VERIFY_BASE_URL`, stop on the first non-zero child status, and print a concise Chinese success summary only after all phases pass.
 
 - [ ] **Step 4: Add the package command and rerun the focused test**
 
-  Add `"verify:acceptance": "node scripts/run-local-acceptance.mjs"` and rerun the focused test. Expect PASS.
+  Add `"verify:acceptance": "node scripts/run-local-acceptance.mjs"` and rerun the focused behavior tests. Expect PASS.
 
 - [ ] **Step 5: Commit Task 1**
 
@@ -56,36 +57,27 @@
 **Files:**
 - Create: `docs/operations/daily-use-guide.md`
 - Create: `docs/acceptance/pre-launch-checklist.md`
-- Create: `src/acceptance/localAcceptanceDocumentation.test.ts`
 - Modify: `README.md`
 
 **Interfaces:**
 - Consumes: Existing public routes, Payload collection labels, publication and consent rules documented in README.
 - Produces: Two linked Chinese guides with no secrets or real personal data.
 
-- [ ] **Step 1: Write a failing documentation test**
-
-  Assert that both documents exist; the daily guide covers login, member consent, submissions, works, news, WeChat search, withdrawal, and stopping safely; the checklist covers all public routes, desktop/mobile checks, private-field isolation, fictitious data, backup, secrets, and an explicit no-go gate for public launch.
-
-- [ ] **Step 2: Run the focused documentation test and confirm the expected failure**
-
-  Run `pnpm vitest run src/acceptance/localAcceptanceDocumentation.test.ts`. Expect failure because the documents do not exist.
-
-- [ ] **Step 3: Write the daily-use guide**
+- [ ] **Step 1: Write the daily-use guide**
 
   Use numbered, plain-Chinese steps. Clearly distinguish “save in the backend”, “allow public display”, and “publish”; state that disabling authorization hides content without deleting the internal record.
 
-- [ ] **Step 4: Write the pre-launch checklist**
+- [ ] **Step 2: Write the pre-launch checklist**
 
   Use Markdown checkboxes grouped by startup, pages, workflow, privacy, mobile, backup, and final decision. State that any unchecked privacy or backup item blocks public deployment.
 
-- [ ] **Step 5: Link both documents from README and rerun the focused test**
+- [ ] **Step 3: Link both documents from README and review every link and command**
 
-  Add a short “本地验收与日常使用” section with clickable repository-relative links and the `pnpm verify:acceptance` command. Expect the focused test to PASS.
+  Add a short “本地验收与日常使用” section with clickable repository-relative links and the `pnpm verify:acceptance` command. Open both relative paths from the repository and confirm every referenced route and command exists.
 
-- [ ] **Step 6: Commit Task 2**
+- [ ] **Step 4: Commit Task 2**
 
-  Commit the documents, documentation test, and README update with message `docs: add local acceptance and operations guides`.
+  Commit the documents and README update with message `docs: add local acceptance and operations guides`.
 
 ### Task 3: Execute automated and browser acceptance
 
@@ -140,4 +132,3 @@
 - [ ] **Step 4: Finish the branch**
 
   Re-run the complete test suite on the integration result, fast-forward `main`, and push `origin main` to the existing private repository, following the approved project convention.
-
