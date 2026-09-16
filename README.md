@@ -1,5 +1,7 @@
 # Writers Circle（三十二人文学志后台）
 
+Writers Circle is an open-source digital archive and editorial workflow platform designed for small literary communities. It provides reusable infrastructure for author profiles, submissions, editorial review, published works, news discovery, and privacy/consent controls, with an emphasis on sustainable community publishing.
+
 这是 Writers Circle（三十二人文学志后台）的本地开发项目，使用 Next.js、Payload CMS 与 PostgreSQL。
 
 当前已包含成员档案后台、公开成员展示、公开文学作品、公开文学动态、公开投稿、新闻候选库和全微信公众号文章搜索入口。公众线索入口、AI 和自动发布尚未开发。
